@@ -13,7 +13,7 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Building the application...'
-                sh 'make build'  // Replace with your actual build command
+                
             }
         }
 
@@ -21,7 +21,8 @@ pipeline {
         stage('Test') {
             steps {
                 echo 'Running tests...'
-                sh 'make test'  // Replace with your actual test command
+                
+
             }
         }
 
@@ -29,8 +30,7 @@ pipeline {
         stage('Deploy') {
             steps {
                 echo 'Deploying the application...'
-                sh 'make deploy'  // Replace with your actual deploy command
-            }
+                           }
         }
     }
 
