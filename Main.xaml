@@ -106,7 +106,7 @@
               <OutArgument x:TypeArguments="x:Int32">[b]</OutArgument>
             </ui:AssignOperation.To>
             <ui:AssignOperation.Value>
-              <InArgument x:TypeArguments="x:Int32">0</InArgument>
+              <InArgument x:TypeArguments="x:Int32">20</InArgument>
             </ui:AssignOperation.Value>
           </ui:AssignOperation>
           <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_3">
