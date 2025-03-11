@@ -11,7 +11,7 @@ pipeline {
         UIPATH_ORCH_TENANT_NAME = "DefaultTenant"
         UIPATH_ORCH_FOLDER_NAME = "Jenkins uipath"
 	BRANCH_NAME = 'main'
-        UIPATH_PROJECT_PATH = "${WORKSPACE}/S:\git repos\rpa_uipath_test"
+        UIPATH_PROJECT_PATH = "${WORKSPACE}/S:/git repos/your-project"
         UIPATH_PACKAGE_OUTPUT_PATH = "${WORKSPACE}/Output"
         UIPATH_VERSION = "${MAJOR}.${MINOR}.${env.BUILD_NUMBER}"
     }
