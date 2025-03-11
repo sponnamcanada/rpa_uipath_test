@@ -5,6 +5,7 @@ pipeline {
 	        environment {
 	        MAJOR = '1'
 	        MINOR = '0'
+			BRANCH_NAME = 'main'
 	        //Orchestrator Services
 	        UIPATH_ORCH_URL = "https://cloud.uipath.com/"
 	        UIPATH_ORCH_LOGICAL_NAME = "cloud_siva_ponnam"
