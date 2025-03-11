@@ -56,7 +56,8 @@ pipeline {
                     environments: 'DEV', // Keeping the environments parameter
                     credentials: Token(accountName: "${env.UIPATH_ORCH_LOGICAL_NAME}", credentialsId: 'APIUserKey'),
                     traceLevel: 'None',
-                    entryPointPaths: 'Main.xaml'
+                    entryPointPaths: 'Main.xaml',
+                    createProcess: true // Added the missing required parameter
                 )
             }
         }
