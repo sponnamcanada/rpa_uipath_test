@@ -2,7 +2,8 @@ pipeline {
  agent any
 
     	        // Environment Variables
-	        environment {
+	        environment
+			{
 	        MAJOR = '1'
 	        MINOR = '0'
 			BRANCH_NAME = 'main'
@@ -40,8 +41,11 @@ pipeline {
                       outputPath: "Output\\${env.BUILD_NUMBER}",
                       projectJsonPath: "project.json",
                       version: [$class: 'ManualVersionEntry', version: "${MAJOR}.${MINOR}.${env.BUILD_NUMBER}"],
-                      useOrchestrator: false,
-					  traceLevel: 'None'
+                      useOrchestrator: true,
+					  credentials: Token(accountName: "${UIPATH_ORCH_LOGICAL_NAME}", credentialsId: 'APIUserKey',
+					  traceLoggingLevel: 'None'
+					  
+			
         )
 	            }
 	        }
@@ -54,25 +58,16 @@ pipeline {
 	
 
 	         // Deploy Stages
-	        stage('Deploy to UAT') {
-	            steps {
-	                echo "Deploying ${BRANCH_NAME} to UAT "
-                UiPathDeploy (
-		createProcess: true,
-                packagePath: "Output\\${env.BUILD_NUMBER}",
-                orchestratorAddress: "${UIPATH_ORCH_URL}",
-                orchestratorTenant: "${UIPATH_ORCH_TENANT_NAME}",
-                folderName: "${UIPATH_ORCH_FOLDER_NAME}",
-		        environments: 'DEV',
+
                 //credentials: [$class: 'UserPassAuthenticationEntry', credentialsId: 'APIUserKey']
-                credentials: Token(accountName: "${UIPATH_ORCH_LOGICAL_NAME}", credentialsId: 'APIUserKey'), 
-				traceLevel: 'None',
-				entryPointPaths: 'Main.xaml'
+                //credentials: Token(accountName: "${UIPATH_ORCH_LOGICAL_NAME}", credentialsId: 'APIUserKey'), 
+				//traceLevel: 'None',
+				//entryPointPaths: 'Main.xaml'
 	
 
-	        )
-	            }
-	        }
+	        //)
+	          //  }
+	        //}
 	
 
 	
@@ -87,11 +82,11 @@ pipeline {
 	
 
 	    // Options
-	    options {
+	    //options {
 	        // Timeout for pipeline
-	        timeout(time:80, unit:'MINUTES')
-	        skipDefaultCheckout()
-	    }
+	      //  timeout(time:80, unit:'MINUTES')
+	       // skipDefaultCheckout()
+	    //}
 	
 
 	
