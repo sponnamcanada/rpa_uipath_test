@@ -37,7 +37,7 @@ pipeline {
                 UiPathPack (
                     projectJsonPath: "${UIPATH_PROJECT_PATH}/project.json", // The path to project.json in your workspace
                     outputPath: "${UIPATH_PACKAGE_OUTPUT_PATH}/${env.BUILD_NUMBER}", // Path where the .nupkg will be saved
-                    version: "${UIPATH_VERSION}",  // The version to assign to the .nupkg
+                    version: [$class: 'ManualVersionEntry', version: "${UIPATH_VERSION}"],  // The version to assign to the .nupkg
                     traceLevel: 'None',  // Trace level (can be 'None', 'Info', 'Verbose')
                     useOrchestrator: false 
                 )
