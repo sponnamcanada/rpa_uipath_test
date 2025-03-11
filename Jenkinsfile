@@ -53,7 +53,7 @@ pipeline {
                     orchestratorAddress: "${env.UIPATH_ORCH_URL}",
                     orchestratorTenant: "${env.UIPATH_ORCH_TENANT_NAME}",
                     folderName: "${env.UIPATH_ORCH_FOLDER_NAME}",
-                    environments: 'DEV', // Keeping the environments parameter
+                    environments: '', // Keeping the environments parameter
                     credentials: Token(accountName: "${env.UIPATH_ORCH_LOGICAL_NAME}", credentialsId: 'APIUserKey'),
                     traceLevel: 'None',
                     entryPointPaths: 'Main.xaml',
