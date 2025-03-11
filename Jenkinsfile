@@ -38,7 +38,7 @@ pipeline {
                     outputPath: "${UIPATH_PACKAGE_OUTPUT_PATH}/${env.BUILD_NUMBER}", // Path where the .nupkg will be saved
                     version: [$class: 'ManualVersionEntry', version: "${UIPATH_VERSION}"],  // The version to assign to the .nupkg
                     traceLevel: 'None',  // Trace level (can be 'None', 'Info', 'Verbose')
-                    useOrchestrator: false 
+                    useOrchestrator: false
                 )
             }
         }
@@ -53,7 +53,8 @@ pipeline {
                     orchestratorAddress: "${env.UIPATH_ORCH_URL}",
                     orchestratorTenant: "${env.UIPATH_ORCH_TENANT_NAME}",
                     folderName: "${env.UIPATH_ORCH_FOLDER_NAME}",
-                    credentials: Token(accountName: "${env.UIPATH_ORCH_LOGICAL_NAME}", credentialsId: 'APIUserKey'), 
+                    environments: 'DEV',
+                    credentials: Token(accountName: "${env.UIPATH_ORCH_LOGICAL_NAME}", credentialsId: 'APIUserKey'),
                     traceLevel: 'None',
                     entryPointPaths: 'Main.xaml'
                 )
