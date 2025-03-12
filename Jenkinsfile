@@ -52,17 +52,19 @@ pipeline {
             steps {
                 echo "Deploying the package to Orchestrator..."
 
-                UiPathDeploy(
-                    packagePath: "${UIPATH_PACKAGE_OUTPUT_PATH}/${env.BUILD_NUMBER}",  // Correct path to the .nupkg file
-                    orchestratorAddress: "${env.UIPATH_ORCH_URL}", // Orchestrator URL
-                    orchestratorTenant: "${env.UIPATH_ORCH_TENANT_NAME}", // Orchestrator Tenant Name
-                    folderName: "${env.UIPATH_ORCH_FOLDER_NAME}", // Folder in Orchestrator
-		    environments:'',
-		    createProcess:"true",
-                    credentials: Token(accountName: "${env.UIPATH_ORCH_LOGICAL_NAME}", credentialsId: 'APIUserKey'),  // Credential ID from Jenkins
-                    traceLevel: 'Verbose', // Trace level (can be 'None', 'Info', or 'Verbose')
-                    entryPointPaths: 'Main.xaml'  // Entry point for your process
-                )
+                withCredentials([string(credentialsId: 'APIUserKey', variable: 'UIPATH_API_TOKEN')]) {
+                    UiPathDeploy(
+                        packagePath: "${UIPATH_PACKAGE_OUTPUT_PATH}/${env.BUILD_NUMBER}",  // Correct path to the .nupkg file
+                        orchestratorAddress: "${env.UIPATH_ORCH_URL}", // Orchestrator URL
+                        orchestratorTenant: "${env.UIPATH_ORCH_TENANT_NAME}", // Orchestrator Tenant Name
+                        folderName: "${env.UIPATH_ORCH_FOLDER_NAME}", // Folder in Orchestrator
+                        environments: '', // Empty environments field if not needed
+                        createProcess: true, // Create a process in Orchestrator
+                        credentials: [apiKey: "${UIPATH_API_TOKEN}"],  // Credential API token injected here
+                        traceLevel: 'Verbose', // Trace level (can be 'None', 'Info', or 'Verbose')
+                        entryPointPaths: 'Main.xaml'  // Entry point for your process
+                    )
+                }
             }
         }
     }
