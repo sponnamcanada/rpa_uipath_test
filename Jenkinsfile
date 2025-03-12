@@ -25,8 +25,15 @@ pipeline {
                 echo "Jenkins URL: ${env.JENKINS_URL}"
                 echo "Jenkins Job Number: ${env.BUILD_NUMBER}"
                 echo "Jenkins Job Name: ${env.JOB_NAME}"
+
+                script {
+                    // Set UIPATH_PROJECT_PATH dynamically based on the branch
+                    env.UIPATH_PROJECT_PATH = getProjectPath(env.BRANCH_NAME)
+                }
+                
                 echo "GitHub Branch Name: ${env.BRANCH_NAME}"
-		echo "Using UiPath Project Path: ${env.UIPATH_PROJECT_PATH}"
+                echo "Using UiPath Project Path: ${env.UIPATH_PROJECT_PATH}"
+
                 checkout scm
             }
         }
@@ -35,6 +42,7 @@ pipeline {
         stage('Build') {
             steps {
                 echo "Building with workspace: ${env.WORKSPACE}"
+                
                 UiPathPack(
                     projectJsonPath: "${UIPATH_PROJECT_PATH}/project.json", // The path to project.json in your workspace
                     outputPath: "${UIPATH_PACKAGE_OUTPUT_PATH}/${env.BUILD_NUMBER}", // Path where the .nupkg will be saved
