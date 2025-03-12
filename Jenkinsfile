@@ -10,7 +10,7 @@ pipeline {
         UIPATH_ORCH_LOGICAL_NAME = "cloud_siva_ponnam"
         UIPATH_ORCH_TENANT_NAME = "DefaultTenant"
         UIPATH_ORCH_FOLDER_NAME = "Jenkins uipath"
-        UIPATH_PROJECT_PATH = ''
+        UIPATH_PROJECT_PATH = '${WORKSPACE}/${env.JOB_NAME}'
         BRANCH_NAME = "main"
         UIPATH_PACKAGE_OUTPUT_PATH = "${WORKSPACE}/Output"
         UIPATH_VERSION = "${MAJOR}.${MINOR}.${env.BUILD_NUMBER}"
@@ -25,12 +25,6 @@ pipeline {
                 echo "Jenkins URL: ${env.JENKINS_URL}"
                 echo "Jenkins Job Number: ${env.BUILD_NUMBER}"
                 echo "Jenkins Job Name: ${env.JOB_NAME}"
-
-                script {
-                    // Set UIPATH_PROJECT_PATH dynamically based on the branch
-                    env.UIPATH_PROJECT_PATH = getProjectPath(env.BRANCH_NAME)
-                }
-                
                 echo "GitHub Branch Name: ${env.BRANCH_NAME}"
                 echo "Using UiPath Project Path: ${env.UIPATH_PROJECT_PATH}"
 
