@@ -53,11 +53,10 @@ pipeline {
         stage('Deploy to Production') {
             steps {
                 echo 'Deploy to Production'
-                // Add deployment steps here (if any)
-				echo "Project path:${WORKSPACE}/Output/${env.BUILD_NUMBER}"
-				echo "APIUserKey"
-
-				
+				script {
+                    withCredentials([string(credentialsId: 'APIUserKey', variable: 'API_KEY')]) {
+                        echo "APIUserKey: ${API_KEY}"
+                    }
             }
         }
     }
