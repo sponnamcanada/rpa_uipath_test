@@ -9,7 +9,7 @@ pipeline {
         UIPATH_ORCH_URL = "https://cloud.uipath.com/cloud_siva_ponnam/DefaultTenant/orchestrator_"
         UIPATH_ORCH_LOGICAL_NAME = "cloud_siva_ponnam"
         UIPATH_ORCH_TENANT_NAME = "DefaultTenant"
-        UIPATH_ORCH_FOLDER_NAME = "Jenkins uipath"
+        UIPATH_ORCH_FOLDER_NAME = "jenkins uipath"
         UIPATH_PROJECT_PATH = '${WORKSPACE}/'
         BRANCH_NAME = "main"
         UIPATH_PACKAGE_OUTPUT_PATH = "${WORKSPACE}/Output"
@@ -60,7 +60,7 @@ pipeline {
 		    environments:'',
 		    createProcess:"true",
                     credentials: Token(accountName: "${env.UIPATH_ORCH_LOGICAL_NAME}", credentialsId: 'APIUserKey'),  // Credential ID from Jenkins
-                    traceLevel: 'None', // Trace level (can be 'None', 'Info', or 'Verbose')
+                    traceLevel: 'Verbose', // Trace level (can be 'None', 'Info', or 'Verbose')
                     entryPointPaths: 'Main.xaml'  // Entry point for your process
                 )
             }
