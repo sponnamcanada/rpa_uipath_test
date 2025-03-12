@@ -10,7 +10,7 @@ pipeline {
         UIPATH_ORCH_LOGICAL_NAME = "cloud_siva_ponnam"
         UIPATH_ORCH_TENANT_NAME = "DefaultTenant"
         UIPATH_ORCH_FOLDER_NAME = "Jenkins uipath"
-        UIPATH_PROJECT_PATH = '${WORKSPACE}/'
+        UIPATH_PROJECT_PATH = 'S:\git repos\rpa_uipath_test'
         BRANCH_NAME = "main"
         UIPATH_PACKAGE_OUTPUT_PATH = "${WORKSPACE}/Output"
         UIPATH_VERSION = "${MAJOR}.${MINOR}.${env.BUILD_NUMBER}"
