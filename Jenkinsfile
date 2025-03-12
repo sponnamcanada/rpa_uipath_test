@@ -64,6 +64,7 @@ pipeline {
                 //credentials: [$class: 'UserPassAuthenticationEntry', credentialsId: 'APIUserKey']
                 credentials: Token(accountName: "${UIPATH_ORCH_LOGICAL_NAME}", credentialsId: 'APIUserKey'), 
 				traceLevel: 'None',
+				createProcess: false,
 				entryPointPaths: 'Main.xaml'
 	
 
