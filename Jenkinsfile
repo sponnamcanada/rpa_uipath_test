@@ -34,8 +34,10 @@ pipeline {
                     outputPath: "Output/${env.BUILD_NUMBER}",
                     projectJsonPath: "project.json",
                     version: [$class: 'ManualVersionEntry', version: "${MAJOR}.${MINOR}.${env.BUILD_NUMBER}"],
-                    useOrchestrator: false,
+                    useOrchestrator: true,
+					credentials: [$class: 'UserPassAuthenticationEntry', credentialsId: “APIUserKey”],
                     traceLevel: 'Verbose'
+					
                 )
             }
         }
@@ -52,7 +54,8 @@ pipeline {
             steps {
                 echo 'Deploy to Production'
                 // Add deployment steps here (if any)
-				echo "Project path:Output\\${env.BUILD_NUMBER}"
+				echo "Project path:${WORKSPACE}\Output\\${env.BUILD_NUMBER}"
+				echo "user key: APIUserKey"
             }
         }
     }
