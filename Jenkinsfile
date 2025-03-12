@@ -59,7 +59,7 @@ pipeline {
                     folderName: "${env.UIPATH_ORCH_FOLDER_NAME}", // Folder in Orchestrator
 		    environments:'',
 		    createProcess:"true",
-                    credentials: Token(accountName: "${env.UIPATH_ORCH_LOGICAL_NAME}", credentialsId: 'Your_Credentials_ID'),  // Credential ID from Jenkins
+                    credentials: Token(accountName: "${env.UIPATH_ORCH_LOGICAL_NAME}", credentialsId: 'APIUserKey'),  // Credential ID from Jenkins
                     traceLevel: 'None', // Trace level (can be 'None', 'Info', or 'Verbose')
                     entryPointPaths: 'Main.xaml'  // Entry point for your process
                 )
