@@ -35,9 +35,8 @@ pipeline {
                     projectJsonPath: "project.json",
                     version: [$class: 'ManualVersionEntry', version: "${MAJOR}.${MINOR}.${env.BUILD_NUMBER}"],
                     useOrchestrator: true,
-					credentials: [$class: 'UserPassAuthenticationEntry', credentialsId: “APIUserKey”],
+                    credentials: [$class: 'UserPassAuthenticationEntry', credentialsId: 'APIUserKey'],
                     traceLevel: 'Verbose'
-					
                 )
             }
         }
@@ -53,10 +52,11 @@ pipeline {
         stage('Deploy to Production') {
             steps {
                 echo 'Deploy to Production'
-				script {
+                script {
                     withCredentials([string(credentialsId: 'APIUserKey', variable: 'API_KEY')]) {
                         echo "APIUserKey: ${API_KEY}"
                     }
+                }
             }
         }
     }
@@ -75,9 +75,9 @@ pipeline {
         failure {
             echo "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.JOB_DISPLAY_URL})"
         }
-        //always {
-            // Clean workspace if successful
-          //  cleanWs()
-        //}
+        // Uncomment to clean workspace if successful
+        // always {
+        //     cleanWs()
+        // }
     }
 }
