@@ -44,5 +44,28 @@ pipeline {
                 )
             }
         }
+
+        // Deploy to Orchestrator Stage
+        stage('Deploy to Orchestrator') {
+            steps {
+                echo "Deploying the package to Orchestrator..."
+
+                // Use the credentials stored in Jenkins as secret text
+                echo "Deploying package using API Token"
+
+                // Call the UiPathDeploy plugin with the credentials and necessary parameters
+                UiPathDeploy(
+                    packagePath: "${UIPATH_PACKAGE_OUTPUT_PATH}/${env.BUILD_NUMBER}",  // Correct path to the .nupkg file
+                    orchestratorAddress: "${env.UIPATH_ORCH_URL}", // Orchestrator URL
+                    orchestratorTenant: "${env.UIPATH_ORCH_TENANT_NAME}", // Orchestrator Tenant Name
+                    folderName: "${env.UIPATH_ORCH_FOLDER_NAME}", // Folder in Orchestrator
+                    environments: '', // Empty environments field if not needed
+                    createProcess: true, // Create a process in Orchestrator
+                    credentials: Token(accountName: "${env.UIPATH_ORCH_LOGICAL_NAME}", credentialsId: 'APIUserKey'), // Use credentials stored in Jenkins
+                    traceLevel: 'Verbose', // Trace level (can be 'None', 'Info', or 'Verbose')
+                    entryPointPaths: 'Main.xaml'  // Entry point for your process
+                )
+            }
+        }
     }
 }
