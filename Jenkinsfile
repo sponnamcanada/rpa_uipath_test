@@ -1,7 +1,6 @@
 pipeline {
     agent any
 
-    // Environment Variables
     environment {
         MAJOR = '1'
         MINOR = '0'
@@ -16,7 +15,6 @@ pipeline {
         UIPATH_VERSION = "${MAJOR}.${MINOR}.${env.BUILD_NUMBER}"
     }
 
-    // Stages for the pipeline
     stages {
         // Printing Basic Information
         stage('Preparing') {
@@ -36,7 +34,7 @@ pipeline {
         stage('Build') {
             steps {
                 echo "Building with workspace: ${env.WORKSPACE}"
-                
+
                 UiPathPack(
                     projectJsonPath: "${UIPATH_PROJECT_PATH}/project.json", // The path to project.json in your workspace
                     outputPath: "${UIPATH_PACKAGE_OUTPUT_PATH}/${env.BUILD_NUMBER}", // Path where the .nupkg will be saved
@@ -52,7 +50,11 @@ pipeline {
             steps {
                 echo "Deploying the package to Orchestrator..."
 
-                withCredentials([string(credentialsId: 'APIUserKey', variable: 'UIPATH_API_TOKEN')]) {
+                // Use the credentials stored in Jenkins as secret text
+                withCredentials([string(credentialsId: 'UIPATH_API_KEY', variable: 'UIPATH_API_TOKEN')]) {
+                    echo "Deploying package using API Token"
+
+                    // Call the UiPathDeploy plugin with the credentials and necessary parameters
                     UiPathDeploy(
                         packagePath: "${UIPATH_PACKAGE_OUTPUT_PATH}/${env.BUILD_NUMBER}",  // Correct path to the .nupkg file
                         orchestratorAddress: "${env.UIPATH_ORCH_URL}", // Orchestrator URL
@@ -60,10 +62,9 @@ pipeline {
                         folderName: "${env.UIPATH_ORCH_FOLDER_NAME}", // Folder in Orchestrator
                         environments: '', // Empty environments field if not needed
                         createProcess: true, // Create a process in Orchestrator
-                        credentials: Token(accountName: "${env.UIPATH_ORCH_LOGICAL_NAME}", credentialsId: 'APIUserKey'),  // Credential API token injected here
+                        credentials: Token(accountName: "${env.UIPATH_ORCH_LOGICAL_NAME}", credentialsId: 'APIUserKey'), // Use credentials stored in Jenkins
                         traceLevel: 'Verbose', // Trace level (can be 'None', 'Info', or 'Verbose')
-                        entryPointPaths: 'Main.xaml', // Entry point for your process
-	                
+                        entryPointPaths: 'Main.xaml'  // Entry point for your process
                     )
                 }
             }
