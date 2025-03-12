@@ -57,6 +57,7 @@ pipeline {
                     environments: '', // Keeping the environments parameter
                     credentials: [$class:'UserPassAuthenticationEntry',credentialsId: 'APIUserKey'],
                     traceLevel: 'None',
+                    entryPointPaths: 'Main.xaml',
                     createProcess: true // Added the missing required parameter
                 )
             }
