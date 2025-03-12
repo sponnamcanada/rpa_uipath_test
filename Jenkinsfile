@@ -6,7 +6,7 @@ pipeline {
 	        MAJOR = '1'
 	        MINOR = '0'
 	        //Orchestrator Services
-	        UIPATH_ORCH_URL = "https://cloud.uipath.com/cloud_siva_ponnam/DefaultTenant/orchestrator_/odata/Folders?%24filter=FullyQualifiedName%20eq%20'jenkins+uipath'"
+	        UIPATH_ORCH_URL = "https://cloud.uipath.com/cloud_siva_ponnam/DefaultTenant/orchestrator_"
 			UIPATH_ORCH_LOGICAL_NAME = "cloud_siva_ponnam"
 			UIPATH_ORCH_TENANT_NAME = "DefaultTenant"
 			UIPATH_ORCH_FOLDER_NAME = "jenkins uipath"
