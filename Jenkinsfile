@@ -13,7 +13,6 @@ pipeline {
         BRANCH_NAME = "main"
         UIPATH_PACKAGE_OUTPUT_PATH = "${WORKSPACE}/Output"
         UIPATH_VERSION = "${MAJOR}.${MINOR}.${env.BUILD_NUMBER}"
-        UIPATH_ORCH_API_TOKEN = "your_api_token_here" // Ensure this is set with your actual API Token
     }
 
     stages {
@@ -37,24 +36,12 @@ pipeline {
                 echo "Building with workspace: ${env.WORKSPACE}"
 
                 UiPathPack(
-                    projectJsonPath: "${UIPATH_PROJECT_PATH}/project.json",
-                    outputPath: "${UIPATH_PACKAGE_OUTPUT_PATH}/${env.BUILD_NUMBER}",
-                    version: [$class: 'ManualVersionEntry', version: "${UIPATH_VERSION}"],
-                    traceLevel: 'Verbose',
+                    projectJsonPath: "${UIPATH_PROJECT_PATH}/project.json", // The path to project.json in your workspace
+                    outputPath: "${UIPATH_PACKAGE_OUTPUT_PATH}/${env.BUILD_NUMBER}", // Path where the .nupkg will be saved
+                    version: [$class: 'ManualVersionEntry', version: "${UIPATH_VERSION}"], // The version to assign to the .nupkg
+                    traceLevel: 'Verbose', // Trace level (can be 'None', 'Info', 'Verbose')
                     useOrchestrator: false
                 )
-            }
-        }
-
-        // Print the details of the built package
-        stage('Print Package Details') {
-            steps {
-                script {
-                    // Print package details before deployment
-                    echo "Package Details:"
-                    echo "Package Path: ${UIPATH_PACKAGE_OUTPUT_PATH}/${env.BUILD_NUMBER}/package.nupkg"
-                    echo "Package Version: ${UIPATH_VERSION}"
-                }
             }
         }
 
@@ -63,30 +50,21 @@ pipeline {
             steps {
                 echo "Deploying the package to Orchestrator..."
 
-                script {
-                    // Run curl to publish the package and capture the response before deployment
-                    def response = sh(script: """
-                        curl -X POST "${UIPATH_ORCH_URL}/odata/Packages/Publish" \\
-                        -H "Authorization: Bearer ${UIPATH_ORCH_API_TOKEN}" \\
-                        -F "file=@${UIPATH_PACKAGE_OUTPUT_PATH}/${env.BUILD_NUMBER}/package.nupkg"
-                    """, returnStdout: true).trim()
+                // Use the credentials stored in Jenkins as secret text
+                echo "Deploying package using API Token"
 
-                    // Print the response after the publish request (before actual deployment step)
-                    echo "Response from API (Before Deploying): ${response}"
-
-                    // Now call UiPathDeploy plugin to deploy the package to Orchestrator
-                    UiPathDeploy(
-                        packagePath: "${UIPATH_PACKAGE_OUTPUT_PATH}/${env.BUILD_NUMBER}/package.nupkg", 
-                        orchestratorAddress: "${UIPATH_ORCH_URL}", 
-                        orchestratorTenant: "${UIPATH_ORCH_TENANT_NAME}", 
-                        folderName: "${UIPATH_ORCH_FOLDER_NAME}",
-                        environments: '', 
-                        createProcess: true,
-                        credentials: Token(accountName: "${UIPATH_ORCH_LOGICAL_NAME}", credentialsId: 'APIUserKey'),
-                        traceLevel: 'Verbose', 
-                        entryPointPaths: 'Main.xaml' 
-                    )
-                }
+                // Call the UiPathDeploy plugin with the credentials and necessary parameters
+                UiPathDeploy(
+                    packagePath: "${UIPATH_PACKAGE_OUTPUT_PATH}/${env.BUILD_NUMBER}",  // Correct path to the .nupkg file
+                    orchestratorAddress: "${UIPATH_ORCH_URL}", // Orchestrator URL
+                    orchestratorTenant: "${UIPATH_ORCH_TENANT_NAME}", // Orchestrator Tenant Name
+                    folderName: "${UIPATH_ORCH_FOLDER_NAME}", // Folder in Orchestrator
+                    environments: '', // Empty environments field if not needed
+                    createProcess: true, // Create a process in Orchestrator
+                    credentials: Token(accountName: "${UIPATH_ORCH_LOGICAL_NAME}", credentialsId: 'APIUserKey'), // Use credentials stored in Jenkins
+                    traceLevel: 'Verbose', // Trace level (can be 'None', 'Info', or 'Verbose')
+                    entryPointPaths: 'Main.xaml'  // Entry point for your process
+                )
             }
         }
     }
