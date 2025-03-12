@@ -60,9 +60,10 @@ pipeline {
                         folderName: "${env.UIPATH_ORCH_FOLDER_NAME}", // Folder in Orchestrator
                         environments: '', // Empty environments field if not needed
                         createProcess: true, // Create a process in Orchestrator
-                        credentials: [apiKey: "${UIPATH_API_TOKEN}"],  // Credential API token injected here
+                        credentials: [apiKey: UIPATH_API_TOKEN],  // Credential API token injected here
                         traceLevel: 'Verbose', // Trace level (can be 'None', 'Info', or 'Verbose')
-                        entryPointPaths: 'Main.xaml'  // Entry point for your process
+                        entryPointPaths: 'Main.xaml', // Entry point for your process
+	                version: [$class: 'ManualVersionEntry', version: "${UIPATH_VERSION}"]
                     )
                 }
             }
