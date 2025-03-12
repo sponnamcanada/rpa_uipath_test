@@ -1,112 +1,78 @@
 pipeline {
- agent any
+    agent any
 
-    	        // Environment Variables
-	        environment {
-	        MAJOR = '1'
-	        MINOR = '0'
-	        //Orchestrator Services
-	        UIPATH_ORCH_URL = "https://cloud.uipath.com/cloud_siva_ponnam/DefaultTenant/orchestrator_"
-			UIPATH_ORCH_LOGICAL_NAME = "cloud_siva_ponnam"
-			UIPATH_ORCH_TENANT_NAME = "DefaultTenant"
-			UIPATH_ORCH_FOLDER_NAME = "jenkins uipath"
-			BRANCH_NAME = "main"
-	    }
-	    stages {
-	
+    // Environment Variables
+    environment {
+        MAJOR = '1'
+        MINOR = '0'
+        // Orchestrator Services
+        UIPATH_ORCH_URL = "https://cloud.uipath.com/cloud_siva_ponnam/DefaultTenant/orchestrator_"
+        UIPATH_ORCH_LOGICAL_NAME = "cloud_siva_ponnam"
+        UIPATH_ORCH_TENANT_NAME = "DefaultTenant"
+        UIPATH_ORCH_FOLDER_NAME = "jenkins uipath"
+        BRANCH_NAME = "main"
+    }
 
-	        // Printing Basic Information
-	        stage('Preparing'){
-	            steps {
-	                echo "Jenkins Home ${env.JENKINS_HOME}"
-	                echo "Jenkins URL ${env.JENKINS_URL}"
-	                echo "Jenkins JOB Number ${env.BUILD_NUMBER}"
-	                echo "Jenkins JOB Name ${env.JOB_NAME}"
-	                echo "GitHub BranhName ${env.BRANCH_NAME}"
-	                checkout scm
-	
+    stages {
+        // Printing Basic Information
+        stage('Preparing') {
+            steps {
+                echo "Jenkins Home: ${env.JENKINS_HOME}"
+                echo "Jenkins URL: ${env.JENKINS_URL}"
+                echo "Jenkins Job Number: ${env.BUILD_NUMBER}"
+                echo "Jenkins Job Name: ${env.JOB_NAME}"
+                echo "GitHub Branch Name: ${env.BRANCH_NAME}"
+                checkout scm
+            }
+        }
 
-	            }
-	        }
-	
+        // Build Stage
+        stage('Build') {
+            steps {
+                echo "Building with workspace: ${WORKSPACE}"
+                UiPathPack(
+                    outputPath: "Output/${env.BUILD_NUMBER}",
+                    projectJsonPath: "project.json",
+                    version: [$class: 'ManualVersionEntry', version: "${MAJOR}.${MINOR}.${env.BUILD_NUMBER}"],
+                    useOrchestrator: false,
+                    traceLevel: 'Verbose'
+                )
+            }
+        }
 
-	         // Build Stages
-	        stage('Build') {
-	            steps {
-	                echo "Building..with ${WORKSPACE}"
-	                UiPathPack (
-                      outputPath: "Output\\${env.BUILD_NUMBER}",
-                      projectJsonPath: "project.json",
-                      version: [$class: 'ManualVersionEntry', version: "${MAJOR}.${MINOR}.${env.BUILD_NUMBER}"],
-                      useOrchestrator: false,
-					  traceLevel: 'Verbose'
-        )
-	            }
-	        }
-	         // Test Stages
-	        stage('Test') {
-	            steps {
-	                echo 'Testing..the workflow...'
-	            }
-	        }
-	
+        // Test Stage
+        stage('Test') {
+            steps {
+                echo 'Testing the workflow...'
+            }
+        }
 
-	         // Deploy Stages
-	        stage('Deploy to UAT') {
-	            steps {
-	                echo "Deploying ${BRANCH_NAME} to UAT "
-                UiPathDeploy (
-                packagePath: "Output\\${env.BUILD_NUMBER}",
-                orchestratorAddress: "${UIPATH_ORCH_URL}",
-                orchestratorTenant: "${UIPATH_ORCH_TENANT_NAME}",
-                folderName: "${UIPATH_ORCH_FOLDER_NAME}",
-                environments: '',
-                //credentials: [$class: 'UserPassAuthenticationEntry', credentialsId: 'APIUserKey']
-                credentials: Token(accountName: "${UIPATH_ORCH_LOGICAL_NAME}", credentialsId: 'APIUserKey'), 
-								traceLevel: 'Verbose',
-								entryPointPaths: 'Main.xaml',
-								createProcess:'True'
-	
+        // Deploy to Production Stage
+        stage('Deploy to Production') {
+            steps {
+                echo 'Deploy to Production'
+                // Add deployment steps here (if any)
+            }
+        }
+    }
 
-	        )
-	            }
-	        }
-	
+    // Options
+    options {
+        // Timeout for pipeline
+        timeout(time: 80, unit: 'MINUTES')
+        skipDefaultCheckout()
+    }
 
-	
-
-	         // Deploy to Production Step
-	        stage('Deploy to Production') {
-	            steps {
-	                echo 'Deploy to Production'
-	                }
-	            }
-	    }
-	
-
-	    // Options
-	    options {
-	        // Timeout for pipeline
-	        timeout(time:80, unit:'MINUTES')
-	        skipDefaultCheckout()
-	    }
-	
-
-	
-
-	    // 
-	    post {
-	        success {
-	            echo 'Deployment has been completed!'
-	        }
-	        failure {
-	          echo "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.JOB_DISPLAY_URL})"
-	        }
-	        always {
-	            /* Clean workspace if success */
-	            cleanWs()
-	        }
-	    }
-	
-
-	}
+    post {
+        success {
+            echo 'Deployment has been completed!'
+        }
+        failure {
+            echo "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.JOB_DISPLAY_URL})"
+        }
+        always {
+            // Clean workspace if successful
+            cleanWs()
+        }
+    }
+}
