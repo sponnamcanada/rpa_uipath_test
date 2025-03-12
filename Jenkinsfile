@@ -52,11 +52,6 @@ pipeline {
         stage('Deploy to Production') {
             steps {
                 echo 'Deploy to Production'
-                script {
-                    withCredentials([string(credentialsId: 'APIUserKey', variable: 'API_KEY')]) {
-                        echo "APIUserKey: ${API_KEY}"
-                    }
-                }
             }
         }
     }
