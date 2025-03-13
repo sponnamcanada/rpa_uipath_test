@@ -17,8 +17,8 @@ pipeline {
                 script {
                     withCredentials([string(credentialsId: 'APIUserKey', variable: 'API_KEY')]) {
                         // Temporarily print API key to check (this will expose the key)
-                        sh "echo ${API_KEY}"  // For Unix-based systems (Linux, MacOS)
-                        // bat "echo ${API_KEY}"  // For Windows-based systems
+                        //sh "echo ${API_KEY}"  // For Unix-based systems (Linux, MacOS)
+                        bat "echo ${API_KEY}"  // For Windows-based systems
                     }
                 }
             }
