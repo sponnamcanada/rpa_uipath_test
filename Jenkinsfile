@@ -3,16 +3,16 @@ pipeline {
 
     environment {
         // UiPath OAuth credentials
-        CLIENT_ID = '608100fa-5eb9-4966-bb84-e0922ace7ad0'  // Replace with your client ID from UiPath
-        CLIENT_SECRET = '$at7#iQI#UJ5WGxLt'  // Replace with your client secret from UiPath
+        CLIENT_ID = '608100fa-5eb9-4966-bb84-e0922ace7ad0'       // Replace with your client ID from UiPath
+        CLIENT_SECRET = '$at7#iQI#UJ5WGxLt' // Replace with your client secret from UiPath
         MAJOR = '1'
         MINOR = '0'
-        UIPATH_ORCH_URL = "https://cloud.uipath.com"  // UiPath Cloud URL
+        UIPATH_ORCH_URL = "https://cloud.uipath.com"
         UIPATH_ORCH_LOGICAL_NAME = "cloud_siva_ponnam"
         UIPATH_ORCH_TENANT_NAME = "DefaultTenant"
         UIPATH_ORCH_FOLDER_NAME = "jenkins uipath"
         BRANCH_NAME = "main"
-        PACKAGE_PATH = 'S:\\jenkins workspace\\workspace\\uipathjenkinswebhook\\Output\\'  // Path to your package
+        PACKAGE_PATH = 'S:\\jenkins workspace\\workspace\\uipathjenkinswebhook\\Output\\' 
     }
 
     stages {
@@ -49,7 +49,7 @@ pipeline {
                     UiPathDeploy(
                         packagePath: PACKAGE_PATH, 
                         orchestratorAddress: "${UIPATH_ORCH_URL}", 
-                        orchestratorTenant: "${UIPATH_ORCH_TENANT_NAME}", 
+                        orchestratorTenant: "${UIPATH_ORCH_LOGICAL_NAME}", 
                         folderName: "${UIPATH_ORCH_FOLDER_NAME}",
                         environments: "",  // You can specify environments if needed
                         credentials: [$class: 'OAuthAuthenticationEntry', accessToken: "${env.ACCESS_TOKEN}"], // Use OAuth token here
