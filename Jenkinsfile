@@ -58,7 +58,7 @@ pipeline {
                     folderName: "folder name",
                     environments: "environment",
                     credentials: [$class: 'UserPassAuthenticationEntry', credentialsId: 'APIUserKey'],
-                    traceLoggingLevel: 'None'
+                    traceLevel: 'Verbose'
                 )
                 echo 'Deploy to Production'
             }
