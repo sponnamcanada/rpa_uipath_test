@@ -6,7 +6,7 @@ pipeline {
         MAJOR = '1'
         MINOR = '0'
         // Orchestrator Services
-        UIPATH_ORCH_URL = "https://cloud.uipath.com/cloud_siva_ponnam/DefaultTenant/orchestrator_"
+        UIPATH_ORCH_URL = "https://cloud.uipath.com/cloud_siva_ponnam/DefaultTenant/orchestrator_/"
         UIPATH_ORCH_LOGICAL_NAME = "cloud_siva_ponnam"
         UIPATH_ORCH_TENANT_NAME = "DefaultTenant"
         UIPATH_ORCH_FOLDER_NAME = "jenkins uipath"
@@ -55,10 +55,10 @@ pipeline {
             steps {
                 UiPathDeploy(
                     packagePath: "${WORKSPACE}\\Output\\${env.BUILD_NUMBER}\\",
-                    orchestratorAddress: "OrchestratorUrl",
-                    orchestratorTenant: "tenant name",
-                    folderName: "folder name",
-                    environments: "environment",
+                    orchestratorAddress: ${UIPATH_ORCH_URL},
+                    orchestratorTenant: ${UIPATH_ORCH_TENANT_NAME},
+                    folderName: ${UIPATH_ORCH_FOLDER_NAME},
+                    environments: "",
                     credentials: [$class: 'UserPassAuthenticationEntry', credentialsId: 'APIUserKey'],
 					entryPointPaths:'Main.xaml',
 					createProcess: true,
