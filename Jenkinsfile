@@ -23,7 +23,7 @@ pipeline {
                     def authResponse = sh(script: """
                         curl -X POST "https://cloud.uipath.com/identity_/connect/token" ^
                         -H "Content-Type: application/x-www-form-urlencoded" ^
-                        -d "grant_type=client_credentials&client_id=${CLIENT_ID}&client_secret=${CLIENT_SECRET}&scope="OR.Administration OR.Administration.Read OR.Administration.Write OR.Assets OR.Assets.Read OR.Assets.Write OR.Execution OR.Execution.Read OR.Execution.Write OR.Folders OR.Folders.Read OR.Folders.Write OR.Jobs OR.Jobs.Read OR.Jobs.Write OR.License OR.License.Read OR.License.Write OR.Machines OR.Machines.Read OR.Machines.Write OR.Monitoring OR.Queues OR.Queues.Read OR.Queues.Write OR.Robots OR.Robots.Read OR.Robots.Write OR.Settings OR.Settings.Read OR.Settings.Write OR.Tasks OR.Tasks.Read OR.Tasks.Write OR.Users OR.Users.Read OR.Users.Write &audience=${ORCHESTRATOR_URL}"
+                        -d "grant_type=client_credentials&client_id=${CLIENT_ID}&client_secret=${CLIENT_SECRET}&scope="OR.Administration OR.Administration.Read OR.Administration.Write OR.Assets OR.Assets.Read OR.Assets.Write OR.Execution OR.Execution.Read OR.Execution.Write OR.Folders OR.Folders.Read OR.Folders.Write OR.Jobs OR.Jobs.Read OR.Jobs.Write OR.License OR.License.Read OR.License.Write OR.Machines OR.Machines.Read OR.Machines.Write OR.Monitoring OR.Queues OR.Queues.Read OR.Queues.Write OR.Robots OR.Robots.Read OR.Robots.Write OR.Settings OR.Settings.Read OR.Settings.Write OR.Tasks OR.Tasks.Read OR.Tasks.Write OR.Users OR.Users.Read OR.Users.Write &audience=${UIPATH_ORCH_URL}"
                     """, returnStdout: true).trim()
 
                     // Parse the response and extract the access token
