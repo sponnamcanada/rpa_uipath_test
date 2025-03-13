@@ -12,32 +12,16 @@ pipeline {
     }
 
     stages {
-        stage('Print API Key Using Script') {
-            steps {
-                script {
-                    withCredentials([string(credentialsId: 'APIUserKey', variable: 'API_KEY')]) {
-                        // Temporarily print API key to check (this will expose the key)
-                        //sh "echo ${API_KEY}"  // For Unix-based systems (Linux, MacOS)
-                        bat "echo ${API_KEY}"  // For Windows-based systems
-                    }
-                }
-            }
-        }
-        
         stage('Deploy to Production') {
             steps {
-                UiPathDeploy(
-                    packagePath: "S:\\jenkins workspace\\workspace\\uipathjenkinswebhook\\Output\\110\\",
-                    orchestratorAddress: "${UIPATH_ORCH_URL}",
-                    orchestratorTenant: "${UIPATH_ORCH_TENANT_NAME}",
-                    folderName: "${UIPATH_ORCH_FOLDER_NAME}",
-                    environments: "",
-                    credentials: [$class: 'UserPassAuthenticationEntry', credentialsId: 'APIUserKey'],
-                    entryPointPaths: 'Main.xaml',
-                    createProcess: true,
-                    traceLevel: 'Verbose'
-                )
-                echo 'Deploy to Production'
+                withCredentials([string(credentialsId: 'APIUserKey', variable: 'API_KEY')]) {
+                    // Print API Key to a file
+                    bat 'echo %API_KEY% > api_key.txt'  // For Windows batch commands
+                    // Print the API Key to console (temporary for testing)
+                    echo "The API Key is: %API_KEY%"
+                    // Optionally, print the contents of the file (for debugging)
+                    bat 'type api_key.txt'
+                }
             }
         }
     }
