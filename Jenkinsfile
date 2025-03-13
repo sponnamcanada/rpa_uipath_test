@@ -51,6 +51,15 @@ pipeline {
         // Deploy to Production Stage
         stage('Deploy to Production') {
             steps {
+                UiPathDeploy(
+                    packagePath: "${outputPath}/",
+                    orchestratorAddress: "OrchestratorUrl",
+                    orchestratorTenant: "tenant name",
+                    folderName: "folder name",
+                    environments: "environment",
+                    credentials: [$class: 'UserPassAuthenticationEntry', credentialsId: 'APIUserKey'],
+                    traceLoggingLevel: 'None'
+                )
                 echo 'Deploy to Production'
             }
         }
