@@ -4,8 +4,7 @@ pipeline {
     environment {
         MAJOR = '1'
         MINOR = '0'
-        // Orchestrator Services
-        UIPATH_ORCH_URL = "https://cloud.uipath.com"
+        UIPATH_ORCH_URL = "https://cloud.uipath.com/cloud_siva_ponnam/DefaultTenant/orchestrator_"
         UIPATH_ORCH_LOGICAL_NAME = "cloud_siva_ponnam"
         UIPATH_ORCH_TENANT_NAME = "DefaultTenant"
         UIPATH_ORCH_FOLDER_NAME = "jenkins uipath"
@@ -13,21 +12,22 @@ pipeline {
     }
 
     stages {
-        stage('Print API Key for Testing') {
+        stage('Print API Key Using Script') {
             steps {
                 script {
-                    // This will expose the API key in the Jenkins logs (only for testing purposes)
                     withCredentials([string(credentialsId: 'APIUserKey', variable: 'API_KEY')]) {
-                        echo "API Key: ${API_KEY}"
+                        // Temporarily print API key to check (this will expose the key)
+                        sh "echo ${API_KEY}"  // For Unix-based systems (Linux, MacOS)
+                        // bat "echo ${API_KEY}"  // For Windows-based systems
                     }
                 }
             }
         }
-
+        
         stage('Deploy to Production') {
             steps {
                 UiPathDeploy(
-                    packagePath: "S:\\jenkins workspace\\workspace\\uipathjenkinswebhook\\Output\\110\\", // Corrected path separator for Windows
+                    packagePath: "S:\\jenkins workspace\\workspace\\uipathjenkinswebhook\\Output\\110\\",
                     orchestratorAddress: "${UIPATH_ORCH_URL}",
                     orchestratorTenant: "${UIPATH_ORCH_TENANT_NAME}",
                     folderName: "${UIPATH_ORCH_FOLDER_NAME}",
