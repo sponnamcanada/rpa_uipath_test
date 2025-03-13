@@ -21,6 +21,7 @@ pipeline {
                 echo "orchestratorAddress: ${UIPATH_ORCH_URL}"
                 echo "orchestratorTenant: ${UIPATH_ORCH_TENANT_NAME}"
                 echo "folderName: ${UIPATH_ORCH_FOLDER_NAME}"
+				echo "credentials: [$class: 'UserPassAuthenticationEntry', credentialsId: 'APIUserKey']"
             }
         }
 
