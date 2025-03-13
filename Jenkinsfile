@@ -13,17 +13,12 @@ pipeline {
     }
 
     stages {
-        stage('Print Info') {
+        stage('Print API Key for Testing') {
             steps {
-                echo "packagePath: S:\\jenkins workspace\\workspace\\uipathjenkinswebhook\\Output\\110\\" // Corrected path separator for Windows
-                echo "orchestratorAddress: ${UIPATH_ORCH_URL}"
-                echo "orchestratorTenant: ${UIPATH_ORCH_TENANT_NAME}"
-                echo "folderName: ${UIPATH_ORCH_FOLDER_NAME}"
-
-                // To check if the API key is being retrieved correctly, you can print a message
                 script {
+                    // This will expose the API key in the Jenkins logs (only for testing purposes)
                     withCredentials([string(credentialsId: 'APIUserKey', variable: 'API_KEY')]) {
-                        echo 'Successfully retrieved API key credentials' // Do not print actual API key
+                        echo "API Key: ${API_KEY}"
                     }
                 }
             }
