@@ -58,6 +58,8 @@ pipeline {
                     folderName: "folder name",
                     environments: "environment",
                     credentials: [$class: 'UserPassAuthenticationEntry', credentialsId: 'APIUserKey'],
+					entryPointPaths:'Main.xaml',
+					createProcess: true,
                     traceLevel: 'Verbose'
                 )
                 echo 'Deploy to Production'
