@@ -45,6 +45,7 @@ pipeline {
         stage('Test') {
             steps {
                 echo 'Testing the workflow...'
+				echo "${WORKSPACE}/Output/${env.BUILD_NUMBER}"
             }
         }
 
@@ -52,7 +53,7 @@ pipeline {
         stage('Deploy to Production') {
             steps {
                 UiPathDeploy(
-                    packagePath: "${outputPath}/",
+                    packagePath: "${WORKSPACE}/Output/${env.BUILD_NUMBER}/",
                     orchestratorAddress: "OrchestratorUrl",
                     orchestratorTenant: "tenant name",
                     folderName: "folder name",
