@@ -22,6 +22,7 @@ pipeline {
                 echo "Jenkins Job Number: ${env.BUILD_NUMBER}"
                 echo "Jenkins Job Name: ${env.JOB_NAME}"
                 echo "GitHub Branch Name: ${env.BRANCH_NAME}"
+				echo "GitHub orch Name: ${UIPATH_ORCH_TENANT_NAME}"
                 checkout scm
             }
         }
@@ -53,7 +54,7 @@ pipeline {
         stage('Deploy to Production') {
             steps {
                 UiPathDeploy(
-                    packagePath: "${WORKSPACE}/Output/${env.BUILD_NUMBER}/",
+                    packagePath: "${WORKSPACE}\\Output\\${env.BUILD_NUMBER}\\",
                     orchestratorAddress: "OrchestratorUrl",
                     orchestratorTenant: "tenant name",
                     folderName: "folder name",
