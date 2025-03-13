@@ -28,7 +28,9 @@ pipeline {
                         --data-urlencode "client_secret=${CLIENT_SECRET}" ^
                         --data-urlencode "scope=OR.Administration OR.Administration.Read OR.Administration.Write OR.Assets OR.Assets.Read OR.Assets.Write OR.Execution OR.Execution.Read OR.Execution.Write OR.Folders OR.Folders.Read OR.Folders.Write OR.Jobs OR.Jobs.Read OR.Jobs.Write OR.License OR.License.Read OR.License.Write OR.Machines OR.Machines.Read OR.Machines.Write OR.Monitoring OR.Queues OR.Queues.Read OR.Queues.Write OR.Robots OR.Robots.Read OR.Robots.Write OR.Settings OR.Settings.Read OR.Settings.Write OR.Tasks OR.Tasks.Read OR.Tasks.Write OR.Users OR.Users.Read OR.Users.Write" ^
                         --data-urlencode "audience=${UIPATH_ORCH_URL}" ^
-                        -v
+                        -v ^
+                        -H "Accept: application/json" ^
+                        -H "Content-Length: 0"
                     """, returnStdout: true).trim()
 
                     // Parse the response and extract the access token
