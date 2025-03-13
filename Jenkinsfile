@@ -37,7 +37,7 @@ pipeline {
                     version: [$class: 'ManualVersionEntry', version: "${MAJOR}.${MINOR}.${env.BUILD_NUMBER}"],
                     useOrchestrator: false,
                     credentials: [$class: 'UserPassAuthenticationEntry', credentialsId: 'APIUserKey'],
-                    traceLevel: 'Verbose'
+                    traceLevel: 'None'
                 )
             }
         }
